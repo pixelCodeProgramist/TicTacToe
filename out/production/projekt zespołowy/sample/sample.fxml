@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <Pane prefHeight="800.0" prefWidth="800.0">
+         <children>
+            <Button fx:id="playButton" layoutX="366.0" layoutY="140.0" mnemonicParsing="false" onMouseClicked="#playButtonClicked" text="Play" />
+            <Button fx:id="OptionsButton" layoutX="353.0" layoutY="197.0" mnemonicParsing="false" onMouseClicked="#optionsButtonCLicked" text="Options" />
+            <Button fx:id="exitButtons" layoutX="367.0" layoutY="262.0" mnemonicParsing="false" onMouseClicked="#exitButtonClicked" text="Exit" />
+         </children>
+      </Pane>
+   </children>
+</GridPane>
