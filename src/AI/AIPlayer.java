@@ -12,6 +12,7 @@ public class AIPlayer {
     private Player player;
     private ArrayList<String> avaibleMoves = new ArrayList<>();
     private List <Point> avaiblecells = new ArrayList<Point>();
+    private int generatedNumberForCrossCricle;
     public static final int NO_PLAYER = 0;
     public static final int PLAYER_X = 1;
     public static final int PLAYER_O = 2;
@@ -26,6 +27,7 @@ public class AIPlayer {
         this.avaibleMoves = avaibleMoves;
         converter = new Converter();
         boardLogic = new int[converter.convertStringNumberToInt(number)][converter.convertStringNumberToInt(number)];
+        gameMovement = new char[converter.convertStringNumberToInt(number)][converter.convertStringNumberToInt(number)];
     }
 
     public boolean isGameOver(){
@@ -62,51 +64,69 @@ public class AIPlayer {
         System.out.println();
     }
 
+    int [] intIndex;
 
-
-    public void loadCurrentGameMovements(char [][] gameMovement){
+    public void loadCurrentGameMovements(char [][] gameMovement,ArrayList<String> avaibleMoves,int generatedNumberForCrossCricle){
         this.gameMovement = gameMovement;
-        /*for(int i=0;i<player.getGameMovement().length;i++){
-            for(int j=0;j<player.getGameMovement().length;j++){
-                System.out.print(gameMovement[i][j]+" ");
-            }
-            System.out.println();
-        }*/
+        this.avaibleMoves = avaibleMoves;
+        this.generatedNumberForCrossCricle = generatedNumberForCrossCricle;
 
         getAvaibleMovesInt();
-        //for(int i=0;i<avaiblecells.size();i++)
-        //    System.out.println(avaiblecells.get(i));
+
     }
 
     public List<Point> getAvaibleMovesInt(){
         List<Point> availableCells = new ArrayList<>();
-
+        for(int i=0;i<avaibleMoves.size();i++){
+            intIndex = converter.convertIdToInt(avaibleMoves.get(i));
+            Point point = new Point(intIndex[1],intIndex[0]);
+            availableCells.add(point);
+        }
         for(int i=0; i< 3;i++){
             for(int j=0;j<3;j++){
-
-                if(gameMovement[i][j] == '?') boardLogic[j][i] = NO_PLAYER;
-                else if(gameMovement[i][j]== 'X') boardLogic[j][i] = PLAYER_X;
-                else if(gameMovement[i][j]== 'O') boardLogic[j][i] = PLAYER_O;
-                if(boardLogic[i][j]==NO_PLAYER)
-                    availableCells.add(new Point(i,j));
+                if(gameMovement[i][j] == '?') boardLogic[i][j] = NO_PLAYER;
+                else if(gameMovement[i][j]== 'X') boardLogic[i][j] = PLAYER_X;
+                else if(gameMovement[i][j]== 'O') boardLogic[i][j] = PLAYER_O;
             }
         }
         return  availableCells;
     }
-    public boolean placeMove(Point point,int playerPlaceMove) {
+
+    public List<Point> getAvailableCells(){
+        List<Point> availableCells = new ArrayList<>();
+        for(int i=0; i< 3;i++){
+            for(int j=0;j<3;j++){
+                if(boardLogic[i][j]==NO_PLAYER)
+                    availableCells.add(new Point(i,j));
+                //System.out.print(boardLogic[i][j] + " ");
+            }
+            //System.out.println();
+        }
+        return  availableCells;
+    }
+
+    /*public boolean placeMove(Point point,int playerPlaceMove) {
+
         for(int i=0;i<avaiblecells.size();i++) {
             if(avaiblecells.get(i).getX()==point.getX()&&avaiblecells.get(i).getY()==point.getY()){
                 point = avaiblecells.get(i);
-
             }
         }
-        if(!avaiblecells.contains(point)){
+        System.out.println();
+
+
+
+
+        boardLogic[point.getY()][point.getX()] = playerPlaceMove;
+
+        return true;
+    }*/
+    public boolean placeMove(Point point,int playerPlaceMove) {
+        if(boardLogic[point.getX()][point.getY()] != NO_PLAYER){
             return false;
         }
 
-        if(playerPlaceMove==1) gameMovement[point.getY()][point.getX()] = 'X';
-        else if(playerPlaceMove==2) gameMovement[point.getX()][point.getY()] = 'O';
-        boardLogic[point.getY()][point.getX()] = playerPlaceMove;
+        boardLogic[point.getX()][point.getY()] = playerPlaceMove;
 
         return true;
     }
@@ -115,14 +135,12 @@ public class AIPlayer {
 
 
     public int minimax(int depth,int turn){
-        //if(player.canEndGame(player.checkWinner('X'))) return 1;
-        //else if(player.canEndGame(player.checkWinner('O'))) return -1;
         if(hasPlayerWon(PLAYER_X)){
             return  1;
         }
         if(hasPlayerWon(PLAYER_O))
             return  -1;
-        List <Point> availableCellsInMethod = getAvaibleMovesInt();
+        List <Point> availableCellsInMethod = getAvailableCells();
 
         if(availableCellsInMethod.isEmpty()) return 0;
 
@@ -130,8 +148,8 @@ public class AIPlayer {
         int max = Integer.MIN_VALUE;
 
 
-        for(int i=0;i<avaiblecells.size();i++){
-            Point point = avaiblecells.get(i);
+        for(int i=0;i<availableCellsInMethod.size();i++){
+            Point point = availableCellsInMethod.get(i);
             if(turn==PLAYER_X){
                 placeMove(point,PLAYER_X);
                 int currentScore = minimax(depth+1,PLAYER_O);

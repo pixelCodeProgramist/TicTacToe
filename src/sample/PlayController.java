@@ -137,31 +137,38 @@ public class PlayController implements Initializable{
                         if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")) {
                             player.draw(r, player.generatePlayer(generatedNumberForCrossCricle));
                             player.drawInPane("X", height);
+
                         } else {
 
                             player.draw(r, "X");
                             player.drawInPane("O", height);
                         }
-                        //aiPlayer.loadCurrentGameMovements(gameMovement);
-
-
                         avaibleMoves.remove(r.getId());
-                        //if (!modeComputerHuman.equals("human"))
-                        isFirstPlayer = false;
+
+
+                        stateOfGame = player.canEndGame(player.checkWinner('O')) || player.canEndGame(player.checkWinner('X'));
+
+                        if (!modeComputerHuman.equals("human")) isFirstPlayer = false;
+
 
                         gameMovement[intIndex[0]][intIndex[1]] = player.generatePlayer(generatedNumberForCrossCricle).charAt(0);
-                        //aiPlayer.placeMove(
-                        //        new Point(intIndex[0], intIndex[1]), AIPlayer.PLAYER_O
-                        //);
 
-                        //aiPlayer.loadCurrentGameMovements(gameMovement);
+                        aiPlayer.loadCurrentGameMovements(gameMovement,avaibleMoves,generatedNumberForCrossCricle);
+
+
+
+
                         int number = 0;
-                        /*if (aiPlayer.getAvaibleMovesInt().size() > 0) {
-                            number = RANDOM.nextInt(aiPlayer.getAvaibleMovesInt().size());
-                            Point point = aiPlayer.getAvaibleMovesInt().get(number);
-                            aiPlayer.minimax(0,AIPlayer.PLAYER_X);
-                            aiPlayer.placeMove(aiPlayer.computerMove, AIPlayer.PLAYER_X);
+                        if (aiPlayer.getAvaibleMovesInt().size() > 0 &&!stateOfGame) {
 
+                            number = RANDOM.nextInt(aiPlayer.getAvaibleMovesInt().size());
+
+                            int score = aiPlayer.minimax(0,AIPlayer.PLAYER_X);
+                            aiPlayer.placeMove(aiPlayer.computerMove, AIPlayer.PLAYER_X);
+                            Point point;
+                            if(!(score==1)) point = aiPlayer.computerMove;
+                            else point = aiPlayer.getAvaibleMovesInt().get(number);
+                            gameMovement[point.getY()][point.getX()] = 'X';
 
                             Rectangle rect = new Rectangle();
                             for (int i = 0; i < tiles.size(); i++) {
@@ -172,15 +179,15 @@ public class PlayController implements Initializable{
                                 }
 
                             }
-
                             player.draw(rect, "X");
                             avaibleMoves.remove(rect.getId());
-                        }*/
+
+                        }
                     }
 
                 } else {
-                    if (avaibleMoves.contains(r.getId())) {
-                        //if(!modeComputerHuman.equals("human")) {
+                   /* if (avaibleMoves.contains(r.getId())) {
+                        if(!modeComputerHuman.equals("human")) {
                             if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")) {
                                 player.draw(r, "X");
                                 player.drawInPane("O", height);
@@ -197,7 +204,7 @@ public class PlayController implements Initializable{
                                 gameMovement[intIndex[0]][intIndex[1]] = 'X';
                             else gameMovement[intIndex[0]][intIndex[1]] = 'O';
                         }
-                    //}
+                    }*/
                 }
 
 
@@ -224,17 +231,11 @@ public class PlayController implements Initializable{
                 }
             }
         }
-        aiPlayer.displayLogicBoard();
-        System.out.println("GAMEBOARD");
-        for(int i=0;i<gameMovement.length;i++){
-            for(int j=0;j<gameMovement[i].length;j++){
-                System.out.print(gameMovement[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
+
+
 
     }
+
 
 
 
