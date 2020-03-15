@@ -158,6 +158,7 @@ public class PlayController implements Initializable{
 
 
 
+
                         int number = 0;
                         if (aiPlayer.getAvaibleMovesInt().size() > 0 &&!stateOfGame) {
 
