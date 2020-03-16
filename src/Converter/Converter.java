@@ -20,7 +20,6 @@ public class Converter {
         splitedIdNumber[0] = Integer.valueOf(splitedId[2]);
         splitedIdNumber[1] = Integer.valueOf(splitedId[0]);
 
-
         return splitedIdNumber;
     }
 }
