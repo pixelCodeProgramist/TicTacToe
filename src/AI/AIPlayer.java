@@ -155,7 +155,7 @@ public class AIPlayer {
                 int currentScore = minimax(depth+1,PLAYER_O);
                 max = Math.max(currentScore,max);
                 if(depth==0){
-                    System.out.println("Computer score for position " + point + " = " + currentScore);
+                    //System.out.println("Computer score for position " + point + " = " + currentScore);
                 }
                 if(currentScore>=0){
                     if(depth==0) computerMove = point;
