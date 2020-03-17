@@ -25,6 +25,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -78,6 +79,7 @@ public class PlayController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+
         stateOfGame = false;
         pointsO.setText(pointsO.getText() + " " + pointsOInt);
         pointsX.setText(pointsX.getText() + " " + pointsXInt);
@@ -127,7 +129,7 @@ public class PlayController implements Initializable{
 
     public void setMoveAnimation(){
         double height = yourMovementPane.getHeight();
-
+        //aiPlayer.displayLogicBoard();
         if(!stateOfGame) {
             int number = 0;
             if (aiPlayer.getAvaibleMovesInt().size() > 0) {
@@ -135,26 +137,47 @@ public class PlayController implements Initializable{
                 number = RANDOM.nextInt(aiPlayer.getAvaibleMovesInt().size());
 
                 int score = aiPlayer.minimax(0, AIPlayer.PLAYER_X);
-                aiPlayer.placeMove(aiPlayer.computerMove, AIPlayer.PLAYER_X);
+                //System.out.println(score);
+
+                List<Point> plusPoints = aiPlayer.getPlusPoints();
+                List <Point> zeroPoints = aiPlayer.getZeroPoints();
+
                 Point point;
-                if ((score == 1) || (score == -1))
-                    point = aiPlayer.computerMove;
-                point = aiPlayer.getAvaibleMovesInt().get(number);
-                gameMovement[point.getY()][point.getX()] = 'X';
+
+                    if(!plusPoints.isEmpty()) {
+                        number = RANDOM.nextInt(plusPoints.size());
+                        point = aiPlayer.getPlusPoints().get(number);
+                    }else{
+                        if(!zeroPoints.isEmpty()) {
+                            number = RANDOM.nextInt(zeroPoints.size());
+                            point = aiPlayer.getZeroPoints().get(number);
+                        }else {
+                            number = RANDOM.nextInt(aiPlayer.getAvailableCells().size());
+                            point = aiPlayer.getAvailableCells().get(number);
+                        }
+                    }
+                aiPlayer.placeMove(point, AIPlayer.PLAYER_X);
+
+                System.out.println("SIZE" + aiPlayer.getZeroPoints().size());
+
+                gameMovement[point.getX()][point.getY()] = 'X';
+
                 stateOfGame = player.canEndGame(player.checkWinner('O')) || player.canEndGame(player.checkWinner('X'));
 
 
                 Rectangle rect = new Rectangle();
                 for (int i = 0; i < tiles.size(); i++) {
 
-                    if (tiles.get(i).getId().equals(point.getX() + "|" + point.getY())) {
+                    if (tiles.get(i).getId().equals(point.getY() + "|" + point.getX())) {
                         rect = tiles.get(i);
                         break;
                     }
 
                 }
+                aiPlayer.displayLogicBoard();
                 player.draw(rect, "X");
                 avaibleMoves.remove(rect.getId());
+                aiPlayer.clearZeroList();
                 player.drawInPane("O", height);
                 if (stateOfGame || avaibleMoves.size() == 0) {
                     winner = player.getWinner();
@@ -184,7 +207,7 @@ public class PlayController implements Initializable{
         double height = yourMovementPane.getHeight();
         int []intIndex;
         stateOfGame = player.canEndGame(player.checkWinner('O')) || player.canEndGame(player.checkWinner('X'));
-        System.out.println("1: " + stateOfGame);
+        //System.out.println("1: " + stateOfGame);
 
 
         for (Rectangle r : tiles) {
@@ -218,7 +241,7 @@ public class PlayController implements Initializable{
                             aiPlayer.loadCurrentGameMovements(gameMovement, avaibleMoves, generatedNumberForCrossCricle);
 
 
-                            aiPlayer.displayLogicBoard();
+                            //aiPlayer.displayLogicBoard();
 
 
                             PauseTransition pause = new PauseTransition(Duration.seconds(1));
@@ -226,9 +249,9 @@ public class PlayController implements Initializable{
                                     setMoveAnimation());
                             pause.play();
                             avaibleMoves.remove(r.getId());
-
+                            System.out.println();
                             stateOfGame = player.canEndGame(player.checkWinner('O')) || player.canEndGame(player.checkWinner('X'));
-                            System.out.println("2: " + stateOfGame);
+                            //System.out.println("2: " + stateOfGame);
 
 
                         }
@@ -287,12 +310,12 @@ public class PlayController implements Initializable{
             }
         }
 
-        for(int i=0;i<gameMovement.length;i++){
+        /*for(int i=0;i<gameMovement.length;i++){
             for(int j =0;j<gameMovement[i].length;j++){
                 System.out.print(gameMovement[i][j]);
             }
             System.out.println();
-        }
+        }*/
     }
 
 

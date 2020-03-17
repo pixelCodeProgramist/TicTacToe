@@ -53,7 +53,6 @@ public class Controller {
 
     public void transferData(char number, String modeComputerHuman, String modeCircleCross, String modeFirstSecond){
         this.number = String.valueOf(number);
-        System.out.println(number);
         this.modeComputerHuman = modeComputerHuman;
         this.modeCircleCross = modeCircleCross;
         this.modeFirstSecond = modeFirstSecond;

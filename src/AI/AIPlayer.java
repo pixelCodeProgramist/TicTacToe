@@ -1,5 +1,6 @@
 package AI;
 
+
 import Converter.Converter;
 import Player.Player;
 import Point.Point;
@@ -12,6 +13,18 @@ public class AIPlayer {
     private Player player;
     private ArrayList<String> avaibleMoves = new ArrayList<>();
     private List <Point> avaiblecells = new ArrayList<Point>();
+
+    public List<Point> getZeroPoints() {
+        return zeroPoints;
+    }
+
+    private List <Point> zeroPoints = new ArrayList<Point>();
+
+    public List<Point> getPlusPoints() {
+        return plusPoints;
+    }
+
+    private List <Point> plusPoints = new ArrayList<Point>();
     private int generatedNumberForCrossCricle;
     public static final int NO_PLAYER = 0;
     public static final int PLAYER_X = 1;
@@ -20,11 +33,17 @@ public class AIPlayer {
     private Converter converter;
     private char [][] gameMovement;
     private int [][] boardLogic;
+    private String number;
 
+    public void clearZeroList(){
+        plusPoints.clear();
+        zeroPoints.clear();
 
+    }
     public AIPlayer(Player player,ArrayList<String> avaibleMoves,String number) {
         this.player = player;
         this.avaibleMoves = avaibleMoves;
+        this.number = number;
         converter = new Converter();
         boardLogic = new int[converter.convertStringNumberToInt(number)][converter.convertStringNumberToInt(number)];
         gameMovement = new char[converter.convertStringNumberToInt(number)][converter.convertStringNumberToInt(number)];
@@ -35,23 +54,54 @@ public class AIPlayer {
     }
 
     public boolean hasPlayerWon(int player){
-        if((boardLogic[0][0]==boardLogic[1][1] &&boardLogic[0][0]==boardLogic[2][2]&& boardLogic[0][0] == player)
-                ||
-                (boardLogic[0][2]==boardLogic[1][1]&&boardLogic[0][2]==boardLogic[2][2] && boardLogic[0][2] ==player)
-        ){
-            return true;
+        int numberOfSign = 0;
+        int [] possibleWins = new int[2*converter.convertStringNumberToInt(number)+2];
+        //char sign;
+        //if(player==PLAYER_X) sign='X';
+        //else sign='O';
+        // rows
+
+        for(int i=0;i<boardLogic.length;i++){
+            for(int j=0;j<boardLogic[i].length;j++){
+                if(boardLogic[i][j]==player) numberOfSign++;
+            }
+            possibleWins[i] = numberOfSign;
+            numberOfSign = 0;
         }
 
-        for(int i=0;i<3;i++){
-            if((boardLogic[i][0]==boardLogic[i][1] && boardLogic[i][0]==boardLogic[i][2] && boardLogic[i][0]==player)
-                    ||
-                    (boardLogic[0][i] == boardLogic[1][i] && boardLogic[0][i] == boardLogic[2][i] && boardLogic[0][i] == player)
-            )
-            {
-                return  true;
+        //columns
+        for(int i=0;i<boardLogic.length;i++){
+            for(int j=0;j<boardLogic[i].length;j++){
+                if(boardLogic[j][i]==player) numberOfSign++;
             }
+            possibleWins[converter.convertStringNumberToInt(number)+i] = numberOfSign;
+            numberOfSign = 0;
         }
-        return  false;
+
+        //cross main
+        for(int i=0;i<boardLogic.length;i++){
+            for(int j=0;j<boardLogic[i].length;j++){
+                if(i==j&&boardLogic[i][j]==player) numberOfSign++;
+            }
+            possibleWins[2*converter.convertStringNumberToInt(number)] = numberOfSign;
+        }
+        numberOfSign=0;
+
+
+        //cross2
+        for(int i=0;i<boardLogic.length;i++){
+            for(int j=0;j<boardLogic[i].length;j++){
+                if(j==boardLogic[i].length-1-i&&boardLogic[i][j]==player) numberOfSign++;
+            }
+            possibleWins[2*converter.convertStringNumberToInt(number)+1] = numberOfSign;
+
+        }
+
+
+        for(int i=0;i<possibleWins.length;i++){
+            if(possibleWins[i]==converter.convertStringNumberToInt(number)) return true;
+        }
+        return false;
     }
 
     public void displayLogicBoard(){
@@ -82,8 +132,8 @@ public class AIPlayer {
             Point point = new Point(intIndex[1],intIndex[0]);
             availableCells.add(point);
         }
-        for(int i=0; i< 3;i++){
-            for(int j=0;j<3;j++){
+        for(int i=0; i< boardLogic.length;i++){
+            for(int j=0;j<boardLogic[i].length;j++){
                 if(gameMovement[i][j] == '?') boardLogic[i][j] = NO_PLAYER;
                 else if(gameMovement[i][j]== 'X') boardLogic[i][j] = PLAYER_X;
                 else if(gameMovement[i][j]== 'O') boardLogic[i][j] = PLAYER_O;
@@ -94,8 +144,8 @@ public class AIPlayer {
 
     public List<Point> getAvailableCells(){
         List<Point> availableCells = new ArrayList<>();
-        for(int i=0; i< 3;i++){
-            for(int j=0;j<3;j++){
+        for(int i=0; i< boardLogic.length;i++){
+            for(int j=0;j<boardLogic[i].length;j++){
                 if(boardLogic[i][j]==NO_PLAYER)
                     availableCells.add(new Point(i,j));
                 //System.out.print(boardLogic[i][j] + " ");
@@ -155,7 +205,9 @@ public class AIPlayer {
                 int currentScore = minimax(depth+1,PLAYER_O);
                 max = Math.max(currentScore,max);
                 if(depth==0){
-                    //System.out.println("Computer score for position " + point + " = " + currentScore);
+                    if(currentScore==0) zeroPoints.add(point);
+                    if(currentScore==1) plusPoints.add(point);
+                    System.out.println("Computer score for position " + point + " = " + currentScore);
                 }
                 if(currentScore>=0){
                     if(depth==0) computerMove = point;
