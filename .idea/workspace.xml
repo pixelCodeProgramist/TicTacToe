@@ -6,21 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/projekt_zespoowy_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projekt zespołowy/AI/AIPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projekt zespołowy/AI/AIPlayer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projekt zespołowy/Player/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projekt zespołowy/Player/Player.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projekt zespołowy/sample/OptionsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projekt zespołowy/sample/OptionsController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projekt zespołowy/sample/PlayController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projekt zespołowy/sample/PlayController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projekt zespołowy/sample/options.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projekt zespołowy/sample/options.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AI/AIPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AI/AIPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Player/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/OptionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/OptionsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/PlayController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/PlayController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/options.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/options.fxml" afterDir="false" />
-    </list>
+    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="" />
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -82,7 +68,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/PlayController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="407">
+            <state relative-caret-position="6120">
               <caret line="390" column="40" selection-start-line="390" selection-start-column="40" selection-end-line="390" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -91,7 +77,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Board/Board.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="364">
@@ -105,19 +91,19 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/options.fxml">
+          <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
           <provider editor-type-id="text-editor">
             <state relative-caret-position="136">
               <caret line="8" column="45" selection-start-line="8" selection-start-column="45" selection-end-line="8" selection-end-column="45" />
             </state>
           </provider>
-          <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Converter/Converter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" selection-start-line="21" selection-end-line="21" />
+            <state relative-caret-position="391">
+              <caret line="23" selection-start-line="23" selection-end-line="23" />
             </state>
           </provider>
         </entry>
@@ -125,7 +111,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Player/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
+            <state relative-caret-position="238">
               <caret line="22" column="35" selection-start-line="22" selection-start-column="35" selection-end-line="22" selection-end-column="35" />
               <folding>
                 <element signature="e#266#267#0" expanded="true" />
@@ -211,13 +197,13 @@
         <option value="$PROJECT_DIR$/src/Board/Board.java" />
         <option value="$PROJECT_DIR$/src/AIAnimation.java" />
         <option value="$PROJECT_DIR$/src/AIAnimation/AIAnimation.java" />
-        <option value="$PROJECT_DIR$/src/Converter/Converter.java" />
         <option value="$PROJECT_DIR$/src/sample/Controller.java" />
         <option value="$PROJECT_DIR$/src/sample/OptionsController.java" />
         <option value="$PROJECT_DIR$/src/AI/AIPlayer.java" />
         <option value="$PROJECT_DIR$/src/Player/Player.java" />
         <option value="$PROJECT_DIR$/src/sample/options.fxml" />
         <option value="$PROJECT_DIR$/src/sample/PlayController.java" />
+        <option value="$PROJECT_DIR$/src/Converter/Converter.java" />
       </list>
     </option>
   </component>
@@ -505,12 +491,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/sample.fxml">
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
       <provider editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="16" column="45" selection-start-line="16" selection-start-column="45" selection-end-line="16" selection-end-column="45" />
         </state>
       </provider>
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/javafx-src.zip!/com/sun/javafx/event/BasicEventDispatcher.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -559,12 +545,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/play.fxml">
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
       <provider editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="10" column="35" selection-start-line="10" selection-start-column="35" selection-end-line="10" selection-end-column="35" />
         </state>
       </provider>
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/javafx-src.zip!/com/sun/javafx/event/EventHandlerManager.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -650,7 +636,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/PlayController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
+        <state relative-caret-position="6120">
           <caret line="390" column="40" selection-start-line="390" selection-start-column="40" selection-end-line="390" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -659,23 +645,16 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/options.fxml">
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
       <provider editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" column="45" selection-start-line="8" selection-start-column="45" selection-end-line="8" selection-end-column="45" />
         </state>
       </provider>
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Converter/Converter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Player/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
+        <state relative-caret-position="238">
           <caret line="22" column="35" selection-start-line="22" selection-start-column="35" selection-end-line="22" selection-end-column="35" />
           <folding>
             <element signature="e#266#267#0" expanded="true" />
@@ -701,6 +680,13 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Converter/Converter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>
