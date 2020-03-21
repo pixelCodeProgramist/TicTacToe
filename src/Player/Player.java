@@ -14,6 +14,11 @@ public class Player {
     }
 
     private String modeComputerHuman;
+
+    public void setModeCircleCross(String modeCircleCross) {
+        this.modeCircleCross = modeCircleCross;
+    }
+
     private String modeCircleCross;
     private String modeFirstSecond;
     private String winner;
@@ -42,6 +47,16 @@ public class Player {
             if(generatedNumber==0) return "O";
             else return "X";
 
+        }
+    }
+
+
+    public String generateOrder(int generatedNumber){
+        if(modeFirstSecond.equals("first")) return "first";
+        else if(modeFirstSecond.equals("second")) return "second";
+        else {
+            if(generatedNumber==0) return "first";
+            else return "second";
         }
     }
 

@@ -5,6 +5,7 @@ import Board.Board;
 import Converter.Converter;
 import Player.Player;
 import Point.Point;
+import javafx.animation.Animation;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,7 +45,7 @@ public class PlayController implements Initializable{
     private int pointsOInt,pointsXInt;
     private Converter converter;
     private boolean isFirstPlayer;
-    private int generatedNumberForCrossCricle;
+    private int generatedNumberForCrossCricle, generatedNumberForOrder;
     private char [][] gameMovement;
     private Board board;
     private Player player;
@@ -94,7 +95,7 @@ public class PlayController implements Initializable{
         blocksPane.setOnMouseClicked(this::handleClickPane);
         Random generator = new Random();
         generatedNumberForCrossCricle = generator.nextInt(2);
-
+        generatedNumberForOrder = generator.nextInt(2);
         for(int i = 0; i<gameMovement.length; i++)
         {
             for(int j = 0; j<gameMovement[i].length; j++)
@@ -106,8 +107,34 @@ public class PlayController implements Initializable{
         board.generateGrid();
         board.generateYourMovementField();
         player = new Player(number,modeComputerHuman,modeCircleCross,modeFirstSecond,winner,blocksPane,yourMovementPane,gameMovement);
+        if(player.generateOrder(generatedNumberForCrossCricle).equals("second")){
+            if(player.generatePlayer(generatedNumberForCrossCricle).equals("X")) modeCircleCross = "O";
+            else modeCircleCross = "X";
+            player.setModeCircleCross(modeCircleCross);
+        }
+
+        if(modeComputerHuman.equals("computer")){
+            if(player.generateOrder(generatedNumberForOrder).equals("first")) {
+                blocksPane.setDisable(true);
+                PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                pause.setOnFinished(event ->
+                        setMoveAnimation());
+                pause.play();
+                PauseTransition paneActive = new PauseTransition(Duration.seconds(1));
+                paneActive.setOnFinished(event ->
+                        activatePane());
+                paneActive.play();
+            }
+
+        }
+
+
         player.drawInPane(player.generatePlayer(generatedNumberForCrossCricle),200);
-        aiPlayer = new AIPlayer(player,avaibleMoves,number);
+
+        aiPlayer = new AIPlayer(player,avaibleMoves,number, generatedNumberForCrossCricle);
+    }
+    public void activatePane(){
+        blocksPane.setDisable(false);
     }
     @FXML
     private void handleMoveInPane(MouseEvent mouseEvent) {
@@ -127,17 +154,20 @@ public class PlayController implements Initializable{
         }
     }
 
-    public void setMoveAnimation(){
+    public void setMoveAnimation() {
+
         double height = yourMovementPane.getHeight();
         //aiPlayer.displayLogicBoard();
         if(!stateOfGame) {
             int number = 0;
             if (aiPlayer.getAvaibleMovesInt().size() > 0) {
 
-                number = RANDOM.nextInt(aiPlayer.getAvaibleMovesInt().size());
 
-                int score = aiPlayer.minimax(0, AIPlayer.PLAYER_X);
-                //System.out.println(score);
+                if (player.generatePlayer(generatedNumberForCrossCricle).equals("X")){
+                    aiPlayer.minimax2(0, AIPlayer.PLAYER_O);
+                }else{
+                    aiPlayer.minimax(0, AIPlayer.PLAYER_X);
+                }
 
                 List<Point> plusPoints = aiPlayer.getPlusPoints();
                 List <Point> zeroPoints = aiPlayer.getZeroPoints();
@@ -156,11 +186,17 @@ public class PlayController implements Initializable{
                             point = aiPlayer.getAvailableCells().get(number);
                         }
                     }
-                aiPlayer.placeMove(point, AIPlayer.PLAYER_X);
+                if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")){
+                    aiPlayer.placeMove(point, AIPlayer.PLAYER_X);
+                    gameMovement[point.getX()][point.getY()] = 'X';
+                }else {
+                    aiPlayer.placeMove(point, AIPlayer.PLAYER_O);
+                    gameMovement[point.getX()][point.getY()] = 'O';
+                }
 
                 System.out.println("SIZE" + aiPlayer.getZeroPoints().size());
 
-                gameMovement[point.getX()][point.getY()] = 'X';
+
 
                 stateOfGame = player.canEndGame(player.checkWinner('O')) || player.canEndGame(player.checkWinner('X'));
 
@@ -172,13 +208,33 @@ public class PlayController implements Initializable{
                         rect = tiles.get(i);
                         break;
                     }
-
                 }
                 aiPlayer.displayLogicBoard();
-                player.draw(rect, "X");
-                avaibleMoves.remove(rect.getId());
-                aiPlayer.clearZeroList();
-                player.drawInPane("O", height);
+                if(player.generateOrder(generatedNumberForOrder).equals("second")) {
+                    if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")) {
+                        player.draw(rect, "X");
+                        avaibleMoves.remove(rect.getId());
+                        aiPlayer.clearZeroList();
+                        player.drawInPane("O", height);
+                    } else {
+                        player.draw(rect, "O");
+                        avaibleMoves.remove(rect.getId());
+                        aiPlayer.clearZeroList();
+                        player.drawInPane("X", height);
+                    }
+                }else {
+                    if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")) {
+                        player.draw(rect, "O");
+                        avaibleMoves.remove(rect.getId());
+                        aiPlayer.clearZeroList();
+                        player.drawInPane("X", height);
+                    } else {
+                        player.draw(rect, "X");
+                        avaibleMoves.remove(rect.getId());
+                        aiPlayer.clearZeroList();
+                        player.drawInPane("O", height);
+                    }
+                }
                 if (stateOfGame || avaibleMoves.size() == 0) {
                     winner = player.getWinner();
                     playAgainButton.setVisible(true);
@@ -198,7 +254,14 @@ public class PlayController implements Initializable{
 
             }
         }
-    }
+        PauseTransition paneActive = new PauseTransition(Duration.seconds(1));
+        paneActive.setOnFinished(event ->
+                activatePane());
+        paneActive.play();
+        }
+
+
+
 
     @FXML
     private void handleClickPane(MouseEvent mouseEvent) {
@@ -216,14 +279,47 @@ public class PlayController implements Initializable{
                 intIndex = converter.convertIdToInt(r.getId());
                 if (isFirstPlayer) {
                     if (avaibleMoves.contains(r.getId())) {
-                        if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")) {
-                            player.draw(r, player.generatePlayer(generatedNumberForCrossCricle));
-                            player.drawInPane("X", height);
+                        if(modeComputerHuman.equals("computer")) {
+                            if (player.generateOrder(generatedNumberForOrder).equals("second")) {
+                                if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")) {
+                                    player.draw(r, player.generatePlayer(generatedNumberForCrossCricle));
+                                    player.drawInPane("X", height);
 
-                        } else {
+                                } else {
 
-                            player.draw(r, "X");
-                            player.drawInPane("O", height);
+                                    player.draw(r, "X");
+                                    player.drawInPane("O", height);
+                                }
+                            } else {
+                                if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")) {
+                                    player.draw(r, "X");
+                                    player.drawInPane("O", height);
+
+                                } else {
+                                    player.draw(r, "O");
+                                    player.drawInPane("X", height);
+                                }
+                            }
+                        }else{
+                            if(player.generateOrder(generatedNumberForOrder).equals("first")) {
+                                if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")) {
+                                    player.draw(r, "O");
+                                    player.drawInPane("X", height);
+
+                                } else {
+                                    player.draw(r, "X");
+                                    player.drawInPane("O", height);
+                                }
+                            }else{
+                                if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")) {
+                                    player.draw(r, "O");
+                                    player.drawInPane("X", height);
+
+                                } else {
+                                    player.draw(r, "X");
+                                    player.drawInPane("O", height);
+                                }
+                            }
                         }
 
                         if(modeComputerHuman.equals("human")) {
@@ -235,14 +331,10 @@ public class PlayController implements Initializable{
                             stateOfGame = player.canEndGame(player.checkWinner('O')) || player.canEndGame(player.checkWinner('X'));
                         }else {
 
-
+                            //blocksPane.setDisable(true);
                             gameMovement[intIndex[0]][intIndex[1]] = player.generatePlayer(generatedNumberForCrossCricle).charAt(0);
 
                             aiPlayer.loadCurrentGameMovements(gameMovement, avaibleMoves, generatedNumberForCrossCricle);
-
-
-                            //aiPlayer.displayLogicBoard();
-
 
                             PauseTransition pause = new PauseTransition(Duration.seconds(1));
                             pause.setOnFinished(event ->
@@ -310,12 +402,7 @@ public class PlayController implements Initializable{
             }
         }
 
-        /*for(int i=0;i<gameMovement.length;i++){
-            for(int j =0;j<gameMovement[i].length;j++){
-                System.out.print(gameMovement[i][j]);
-            }
-            System.out.println();
-        }*/
+
     }
 
 

@@ -21,7 +21,6 @@
       <RadioButton fx:id="firstRadioButton" layoutX="265.0" layoutY="306.0" mnemonicParsing="false" onMouseClicked="#onClickFirstRadio" text="Pierwszy" />
       <RadioButton fx:id="secondRadioButton" layoutX="380.0" layoutY="306.0" mnemonicParsing="false" onMouseClicked="#onClickSecondRadio" text="Drugi" />
       <RadioButton fx:id="randomFirstSecondRadioButton" layoutX="508.0" layoutY="306.0" mnemonicParsing="false" onMouseClicked="#onClickFirstSecondRadio" text="Losuj" />
-      <Label layoutX="56.0" layoutY="28.0" text="Pamiętaj, by wybrać liczbę kolumn lub wirszy z zakresu od 3 do 10 oraz zaznaczyć wszystkie pola" />
       <ComboBox fx:id="rowOrColumnComboBox" layoutX="254.0" layoutY="90.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

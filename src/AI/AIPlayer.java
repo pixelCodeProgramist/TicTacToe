@@ -27,26 +27,30 @@ public class AIPlayer {
     private List <Point> plusPoints = new ArrayList<Point>();
     private int generatedNumberForCrossCricle;
     public static final int NO_PLAYER = 0;
-    public static final int PLAYER_X = 1;
-    public static final int PLAYER_O = 2;
+    public static int PLAYER_X = 1;
+    public static int PLAYER_O = 2;
     public Point computerMove;
     private Converter converter;
     private char [][] gameMovement;
     private int [][] boardLogic;
     private String number;
 
+
     public void clearZeroList(){
         plusPoints.clear();
         zeroPoints.clear();
 
     }
-    public AIPlayer(Player player,ArrayList<String> avaibleMoves,String number) {
+    public AIPlayer(Player player,ArrayList<String> avaibleMoves,String number,int generatedNumberForCrossCricle ) {
         this.player = player;
         this.avaibleMoves = avaibleMoves;
         this.number = number;
+        this.generatedNumberForCrossCricle = generatedNumberForCrossCricle;
+
         converter = new Converter();
         boardLogic = new int[converter.convertStringNumberToInt(number)][converter.convertStringNumberToInt(number)];
         gameMovement = new char[converter.convertStringNumberToInt(number)][converter.convertStringNumberToInt(number)];
+
     }
 
     public boolean isGameOver(){
@@ -56,10 +60,7 @@ public class AIPlayer {
     public boolean hasPlayerWon(int player){
         int numberOfSign = 0;
         int [] possibleWins = new int[2*converter.convertStringNumberToInt(number)+2];
-        //char sign;
-        //if(player==PLAYER_X) sign='X';
-        //else sign='O';
-        // rows
+
 
         for(int i=0;i<boardLogic.length;i++){
             for(int j=0;j<boardLogic[i].length;j++){
@@ -236,6 +237,61 @@ public class AIPlayer {
             boardLogic[point.getX()][point.getY()] = NO_PLAYER;
         }
         return turn == PLAYER_X ? max : min;
+    }
+
+    public int minimax2(int depth,int turn) {
+        if(hasPlayerWon(PLAYER_O))
+            return  1;
+        if(hasPlayerWon(PLAYER_X)){
+            return  -1;
+        }
+
+        List <Point> availableCellsInMethod = getAvailableCells();
+
+        if(availableCellsInMethod.isEmpty()) return 0;
+
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+
+
+        for(int i=0;i<availableCellsInMethod.size();i++){
+            Point point = availableCellsInMethod.get(i);
+            if(turn==PLAYER_O){
+                placeMove(point,PLAYER_O);
+                int currentScore = minimax2(depth+1,PLAYER_X);
+                max = Math.max(currentScore,max);
+                if(depth==0){
+                    if(currentScore==0) zeroPoints.add(point);
+                    if(currentScore==1) plusPoints.add(point);
+                    System.out.println("Computer score for position " + point + " = " + currentScore);
+                }
+                if(currentScore>=0){
+                    if(depth==0) computerMove = point;
+                }
+
+                if(currentScore == 1) {
+                    boardLogic[point.getX()][point.getY()] = NO_PLAYER;
+                    break;
+                }
+
+                if(i == avaiblecells.size()-1 && max < 0){
+                    if(depth==0) computerMove = point;
+                }
+            }else if(turn==PLAYER_X){
+                placeMove(point,PLAYER_X);
+                int currentScore = minimax2(depth+1,PLAYER_O);
+                min = Math.min(currentScore,min);
+                if(min==-1){
+                    boardLogic[point.getX()][point.getY()] = NO_PLAYER;
+                    break;
+                }
+
+
+
+            }
+            boardLogic[point.getX()][point.getY()] = NO_PLAYER;
+        }
+        return turn == PLAYER_O ? max : min;
     }
 
 }
