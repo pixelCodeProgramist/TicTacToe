@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="projekt zespołowy:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/projekt_zespoowy_jar</output-path>
+    <root id="archive" name="projekt zespołowy.jar">
+      <element id="module-output" name="projekt zespołowy" />
+    </root>
+  </artifact>
+</component>
