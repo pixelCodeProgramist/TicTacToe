@@ -8,6 +8,19 @@ import javafx.scene.text.Text;
 
 public class Player {
     private String number;
+    private Text winnerText;
+
+    public Text getWinnerText() {
+        return winnerText;
+    }
+
+    public void setWinnerText(Text winnerText,String winner) {
+        yourMovementPane.getChildren().remove(yourMovementPane.getChildren().size()-1);
+        winnerText.setY(yourMovementPane.getLayoutY() - 20);
+        winnerText.setText(winnerText.getText()+ " " +winner);
+        this.winnerText = winnerText;
+        yourMovementPane.getChildren().add(this.winnerText);
+    }
 
     public char[][] getGameMovement() {
         return gameMovement;
@@ -75,12 +88,13 @@ public class Player {
             drawInPane(winner, 200);
 
 
-            Text winnerText = new Text("WINNER");
+            winnerText = new Text("WINNER");
             winnerText.setFont(Font.font(15));
             winnerText.layoutXProperty().bind(yourMovementPane.widthProperty().subtract(winnerText.prefWidth(-1)).divide(2));
             winnerText.setY(yourMovementPane.getLayoutY() - 20);
 
             yourMovementPane.getChildren().addAll(winnerText);
+
         }
         return winner;
     }

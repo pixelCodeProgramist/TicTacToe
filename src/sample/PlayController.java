@@ -3,9 +3,9 @@ package sample;
 import AI.AIPlayer;
 import Board.Board;
 import Converter.Converter;
+import File.FileIODocument;
 import Player.Player;
 import Point.Point;
-import javafx.animation.Animation;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -41,8 +42,8 @@ public class PlayController implements Initializable{
     @FXML
     private Button backToMenu;
     @FXML
-    private Label pointsO, pointsX;
-    private int pointsOInt,pointsXInt;
+    private Label pointsO, pointsX, tournamentRound,playerLabel;
+    private int pointsOInt,pointsXInt,tournamentRoundInt=1;
     private Converter converter;
     private boolean isFirstPlayer;
     private int generatedNumberForCrossCricle, generatedNumberForOrder;
@@ -50,27 +51,57 @@ public class PlayController implements Initializable{
     private Board board;
     private Player player;
     private AIPlayer aiPlayer;
+    private Font font;
     public static final Random RANDOM= new Random();
-    private boolean stateOfGame;
+    private boolean stateOfGame,tournament;
+    private String nickname1,nickname2;
 
 
-    public PlayController(String number, String modeComputerHuman, String modeCircleCross, String modeFirstSecond ){
+    public PlayController(String number, String modeComputerHuman, String modeCircleCross, String modeFirstSecond, int pointsOInt, int pointsXInt,int tournamentRoundInt,Font font,String nickname1, String nickname2){
         this.number = number;
         this.modeComputerHuman = modeComputerHuman;
+        //tournament
+        this.tournament =true;
+
         this.modeCircleCross = modeCircleCross;
         this.modeFirstSecond = modeFirstSecond;
+
+        this.pointsOInt = pointsOInt;
+        this.pointsXInt = pointsXInt;
+        this.tournamentRoundInt = tournamentRoundInt;
+        //potem nalezy odkomentowac
+        //this.nickname1 = nickname1;
+        //this.nickname2 = nickname2;
+        this.nickname1 = "a";
+        this.nickname2 = "b";
+
+        this.font = font;
         isFirstPlayer = true;
         converter = new Converter();
+        board = new Board(blocksPane,yourMovementPane,number,tiles,avaibleMoves);
         gameMovement = new char[converter.convertStringNumberToInt(number)][converter.convertStringNumberToInt(number)];
     }
 
-    public PlayController(String number, String modeComputerHuman, String modeCircleCross, String modeFirstSecond, int pointsOInt, int pointsXInt){
+
+
+    public PlayController(String number, String modeComputerHuman, String modeCircleCross, String modeFirstSecond,Font font,String nickname1, String nickname2){
         this.number = number;
+
         this.modeComputerHuman = modeComputerHuman;
+        //tournament
+        this.tournament =true;
         this.modeCircleCross = modeCircleCross;
         this.modeFirstSecond = modeFirstSecond;
         this.pointsOInt = pointsOInt;
         this.pointsXInt = pointsXInt;
+        this.tournamentRoundInt =tournamentRoundInt;
+        this.font = font;
+        //nalezy odkomentować
+        //this.nickname1 = nickname1;
+        //this.nickname2 = nickname2;
+        this.nickname1 = "a";
+        this.nickname2 = "b";
+
         isFirstPlayer = true;
         converter = new Converter();
         board = new Board(blocksPane,yourMovementPane,number,tiles,avaibleMoves);
@@ -84,11 +115,26 @@ public class PlayController implements Initializable{
         stateOfGame = false;
         pointsO.setText(pointsO.getText() + " " + pointsOInt);
         pointsX.setText(pointsX.getText() + " " + pointsXInt);
-
+        tournamentRound.setText(tournamentRound.getText() + " " + tournamentRoundInt);
+        if(font!=null)
         playAgainButton.setDisable(true);
         playAgainButton.setVisible(false);
-        backToMenu.setDisable(true);
-        backToMenu.setVisible(false);
+        if(nickname1!=null && !nickname1.trim().isEmpty()){
+            playerLabel.setText(playerLabel.getText() + " " +nickname1);
+            playerLabel.setLayoutX(playerLabel.getLayoutX()-30);
+        }
+        if(font!=null) {
+            backToMenu.setFont(font);
+            backToMenu.setLayoutX(604 * (1 - font.getSize() / 230));
+            playAgainButton.setFont(font);
+            playAgainButton.setLayoutX(backToMenu.getLayoutX());
+            playAgainButton.setLayoutY(backToMenu.getLayoutY()*((1-font.getSize()/200)));
+            pointsX.setFont(font);
+            pointsO.setFont(font);
+            tournamentRound.setFont(font);
+        }
+
+
 
         blocksPane.setOnMouseMoved(this::handleMoveInPane);
         blocksPane.setOnMouseExited(mouseEvent -> handleExitPane());
@@ -108,13 +154,17 @@ public class PlayController implements Initializable{
         board.generateYourMovementField();
         player = new Player(number,modeComputerHuman,modeCircleCross,modeFirstSecond,winner,blocksPane,yourMovementPane,gameMovement);
         if(player.generateOrder(generatedNumberForCrossCricle).equals("second")){
+            playerLabel.setText("Player: "+nickname2);
             if(player.generatePlayer(generatedNumberForCrossCricle).equals("X")) modeCircleCross = "O";
             else modeCircleCross = "X";
             player.setModeCircleCross(modeCircleCross);
+        }else {
+            playerLabel.setText("Player: "+nickname1);
         }
 
         if(modeComputerHuman.equals("computer")){
             if(player.generateOrder(generatedNumberForOrder).equals("first")) {
+                playerLabel.setText("Player: Computer");
                 blocksPane.setDisable(true);
                 PauseTransition pause = new PauseTransition(Duration.seconds(1));
                 pause.setOnFinished(event ->
@@ -124,6 +174,8 @@ public class PlayController implements Initializable{
                 paneActive.setOnFinished(event ->
                         activatePane());
                 paneActive.play();
+            }else {
+                playerLabel.setText("Player: "+nickname1);
             }
 
         }
@@ -155,7 +207,7 @@ public class PlayController implements Initializable{
     }
 
     public void setMoveAnimation() {
-
+        playerLabel.setText("Player: "+nickname1);
         double height = yourMovementPane.getHeight();
         //aiPlayer.displayLogicBoard();
         if(!stateOfGame) {
@@ -194,7 +246,7 @@ public class PlayController implements Initializable{
                     gameMovement[point.getX()][point.getY()] = 'O';
                 }
 
-                System.out.println("SIZE" + aiPlayer.getZeroPoints().size());
+                //System.out.println("SIZE" + aiPlayer.getZeroPoints().size());
 
 
 
@@ -209,7 +261,7 @@ public class PlayController implements Initializable{
                         break;
                     }
                 }
-                aiPlayer.displayLogicBoard();
+                //aiPlayer.displayLogicBoard();
                 if(player.generateOrder(generatedNumberForOrder).equals("second")) {
                     if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")) {
                         player.draw(rect, "X");
@@ -239,15 +291,15 @@ public class PlayController implements Initializable{
                     winner = player.getWinner();
                     playAgainButton.setVisible(true);
                     playAgainButton.setDisable(false);
-                    backToMenu.setVisible(true);
-                    backToMenu.setDisable(false);
+
                     blocksPane.setDisable(true);
                     if (winner.equals("O")) {
                         pointsOInt++;
-
+                        tournamentRoundInt++;
                     }
                     if (winner.equals("X")) {
                         pointsXInt++;
+                        tournamentRoundInt++;
 
                     }
                 }
@@ -294,10 +346,10 @@ public class PlayController implements Initializable{
                                 if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")) {
                                     player.draw(r, "X");
                                     player.drawInPane("O", height);
-
                                 } else {
                                     player.draw(r, "O");
                                     player.drawInPane("X", height);
+
                                 }
                             }
                         }else{
@@ -305,19 +357,23 @@ public class PlayController implements Initializable{
                                 if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")) {
                                     player.draw(r, "O");
                                     player.drawInPane("X", height);
+                                    playerLabel.setText("Player: "+nickname2);
 
                                 } else {
                                     player.draw(r, "X");
                                     player.drawInPane("O", height);
+                                    playerLabel.setText("Player: "+nickname1);
                                 }
                             }else{
                                 if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")) {
                                     player.draw(r, "O");
                                     player.drawInPane("X", height);
+                                    playerLabel.setText("Player: "+nickname1);
 
                                 } else {
                                     player.draw(r, "X");
                                     player.drawInPane("O", height);
+                                    playerLabel.setText("Player: "+nickname2);
                                 }
                             }
                         }
@@ -330,7 +386,7 @@ public class PlayController implements Initializable{
                             isFirstPlayer = false;
                             stateOfGame = player.canEndGame(player.checkWinner('O')) || player.canEndGame(player.checkWinner('X'));
                         }else {
-
+                            playerLabel.setText("Player: Computer");
                             //blocksPane.setDisable(true);
                             gameMovement[intIndex[0]][intIndex[1]] = player.generatePlayer(generatedNumberForCrossCricle).charAt(0);
 
@@ -360,9 +416,14 @@ public class PlayController implements Initializable{
                             if (player.generatePlayer(generatedNumberForCrossCricle).equals("O")) {
                                 player.draw(r, "X");
                                 player.drawInPane("O", height);
+                                if(modeFirstSecond.equals("first")) playerLabel.setText("Player: "+nickname1);
+                                else playerLabel.setText("Player: "+nickname2);
                             } else {
                                 player.draw(r, "O");
                                 player.drawInPane("X", height);
+
+                                if(modeFirstSecond.equals("first")) playerLabel.setText("Player: "+nickname2);
+                                else playerLabel.setText("Player: "+nickname1);
                             }
 
                             avaibleMoves.remove(r.getId());
@@ -386,34 +447,102 @@ public class PlayController implements Initializable{
 
             if (stateOfGame || avaibleMoves.size() == 0) {
                 winner = player.getWinner();
-                playAgainButton.setVisible(true);
-                playAgainButton.setDisable(false);
-                backToMenu.setVisible(true);
-                backToMenu.setDisable(false);
+                if(modeFirstSecond.equals("first")){
+                    if(winner.equals("O")) player.setWinnerText(player.getWinnerText(),nickname1);
+                    else if(winner.equals("X")) player.setWinnerText(player.getWinnerText(),nickname2);
+                }else {
+                    if(winner.equals("O")) player.setWinnerText(player.getWinnerText(),nickname2);
+                    else if(winner.equals("X")) player.setWinnerText(player.getWinnerText(),nickname1);
+                }
+                if(!tournament||tournament&&tournamentRoundInt<3) {
+                    playAgainButton.setVisible(true);
+                    playAgainButton.setDisable(false);
+                    if(tournament&&tournamentRoundInt<3) playAgainButton.setText("Next round");
+                }
+                if(tournament&&tournamentRoundInt==3){
+                    //zapis do pliku
+                    FileIODocument fileIODocument = new FileIODocument();
+                    if(modeFirstSecond.equals("first")) {
+                        if(modeCircleCross.equals("O")){
+                            fileIODocument.zapiszPlik("aaa.txt",nickname1,pointsOInt);
+                            fileIODocument.zapiszPlik("aaa.txt",nickname2,pointsXInt);
+                        }else {
+                            fileIODocument.zapiszPlik("aaa.txt",nickname1,pointsXInt);
+                            fileIODocument.zapiszPlik("aaa.txt",nickname2,pointsOInt);
+                        }
+                    }else {
+                        if(modeCircleCross.equals("O")){
+                            fileIODocument.zapiszPlik("aaa.txt",nickname2,pointsOInt);
+                            fileIODocument.zapiszPlik("aaa.txt",nickname1,pointsXInt);
+                        }else {
+                            fileIODocument.zapiszPlik("aaa.txt",nickname2,pointsXInt);
+                            fileIODocument.zapiszPlik("aaa.txt",nickname1,pointsOInt);
+                        }
+                    }
+                    playAgainButton.setVisible(true);
+                    playAgainButton.setDisable(false);
+                    playAgainButton.setText("Play again");
+                }
+
                 blocksPane.setDisable(true);
-                if (winner.equals("O")) {
-                    pointsOInt++;
-                    break;
+                if(!tournament) {
+                    if (winner.equals("O")) {
+                        pointsOInt++;
+                        break;
+                    }
+                    if (winner.equals("X")) {
+                        pointsXInt++;
+                        break;
+                    }
+                }else {
+
+                    if (winner.equals("O")) {
+                        pointsOInt+=2;
+                        tournamentRoundInt++;
+                        if(tournamentRoundInt==4){
+                            pointsOInt=0;
+                            pointsXInt=0;
+                            tournamentRoundInt=1;
+                        }
+                        break;
+                    }
+                    if (winner.equals("X")) {
+                        pointsXInt+=2;
+                        tournamentRoundInt++;
+                        if(tournamentRoundInt==4){
+                            pointsOInt=0;
+                            pointsXInt=0;
+                            tournamentRoundInt=0;
+                        }
+                        break;
+                    }
+                    if (!winner.equals("O")&&!winner.equals("X")){
+                        pointsOInt++;
+                        pointsXInt++;
+                        tournamentRoundInt++;
+                        if(tournamentRoundInt==4){
+                            pointsOInt=0;
+                            pointsXInt=0;
+                            tournamentRoundInt=0;
+                        }
+                        break;
+                    }
+
+
+
+
                 }
-                if (winner.equals("X")) {
-                    pointsXInt++;
-                    break;
-                }
+
             }
         }
-
-
     }
-
-
-
 
 
 
     @FXML
     public void generateNewGame(MouseEvent mouseEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("play.fxml"));
-        PlayController playController = new PlayController(number,modeComputerHuman,modeCircleCross,modeFirstSecond,pointsOInt,pointsXInt);
+        PlayController playController = new PlayController(number,modeComputerHuman,modeCircleCross,modeFirstSecond,pointsOInt,pointsXInt,tournamentRoundInt,font,nickname1,nickname2);
         loader.setController(playController);
         Parent root = loader.load();
         Node node = (Node) mouseEvent.getSource();
@@ -423,7 +552,10 @@ public class PlayController implements Initializable{
 
     @FXML
     public void backToMenuClicked(MouseEvent mouseEvent) throws  IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
+        Controller controller = new Controller(font);
+        loader.setController(controller);
+        Parent root = loader.load();
         Node node = (Node) mouseEvent.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         stage.setScene(new Scene(root));

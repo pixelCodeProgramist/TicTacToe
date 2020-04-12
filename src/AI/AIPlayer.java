@@ -208,7 +208,7 @@ public class AIPlayer {
                 if(depth==0){
                     if(currentScore==0) zeroPoints.add(point);
                     if(currentScore==1) plusPoints.add(point);
-                    System.out.println("Computer score for position " + point + " = " + currentScore);
+                    //System.out.println("Computer score for position " + point + " = " + currentScore);
                 }
                 if(currentScore>=0){
                     if(depth==0) computerMove = point;
@@ -263,7 +263,7 @@ public class AIPlayer {
                 if(depth==0){
                     if(currentScore==0) zeroPoints.add(point);
                     if(currentScore==1) plusPoints.add(point);
-                    System.out.println("Computer score for position " + point + " = " + currentScore);
+                    //System.out.println("Computer score for position " + point + " = " + currentScore);
                 }
                 if(currentScore>=0){
                     if(depth==0) computerMove = point;

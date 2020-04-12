@@ -10,12 +10,13 @@
       <Pane fx:id="blocksPane" layoutX="75.0" layoutY="159.0" prefHeight="401.0" prefWidth="416.0" />
       <Pane fx:id="yourMovementPane" layoutX="536.0" layoutY="42.0" prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Label layoutX="83.0" layoutY="14.0" text="Player: " />
+            <Label fx:id="playerLabel" layoutX="83.0" layoutY="14.0" text="Player: " />
          </children></Pane>
-      <Pane fx:id="scorePane" layoutX="83.0" layoutY="14.0" prefHeight="78.0" prefWidth="416.0">
+      <Pane fx:id="scorePane" layoutX="83.0" layoutY="14.0" prefHeight="149.0" prefWidth="416.0">
          <children>
             <Label fx:id="pointsX" layoutX="45.0" layoutY="29.0" text="X: " />
             <Label fx:id="pointsO" layoutX="222.0" layoutY="29.0" text="O: " />
+            <Label fx:id="tournamentRound" layoutX="45.0" layoutY="93.0" prefHeight="21.0" prefWidth="266.0" text="Round: " />
          </children></Pane>
       <Button fx:id="playAgainButton" layoutX="604.0" layoutY="424.0" mnemonicParsing="false" onMouseClicked="#generateNewGame" text="Play again" />
       <Button fx:id="backToMenu" layoutX="604.0" layoutY="483.0" mnemonicParsing="false" onMouseClicked="#backToMenuClicked" text="Back to menu" />

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints />
    </columnConstraints>
@@ -14,11 +14,12 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <Pane prefHeight="800.0" prefWidth="800.0">
+      <Pane fx:id="samplePane" prefHeight="800.0" prefWidth="800.0">
          <children>
             <Button fx:id="playButton" layoutX="366.0" layoutY="140.0" mnemonicParsing="false" onMouseClicked="#playButtonClicked" text="Play" />
-            <Button fx:id="OptionsButton" layoutX="353.0" layoutY="197.0" mnemonicParsing="false" onMouseClicked="#optionsButtonCLicked" text="Options" />
-            <Button fx:id="exitButtons" layoutX="367.0" layoutY="262.0" mnemonicParsing="false" onMouseClicked="#exitButtonClicked" text="Exit" />
+            <Button fx:id="optionsButton" layoutX="353.0" layoutY="255.0" mnemonicParsing="false" onMouseClicked="#optionsButtonCLicked" text="Options" />
+            <Button fx:id="exitButtons" layoutX="367.0" layoutY="320.0" mnemonicParsing="false" onMouseClicked="#exitButtonClicked" text="Exit" />
+            <Button fx:id="rankingButton" layoutX="353.0" layoutY="194.0" mnemonicParsing="false" onMouseClicked="#rankingButtonClicked" text="Ranking" />
          </children>
       </Pane>
    </children>

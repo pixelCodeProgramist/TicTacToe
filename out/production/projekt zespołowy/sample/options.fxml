@@ -4,23 +4,31 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="mainPane" onMouseMoved="#onMouseMovedMainPane" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.OptionsController">
+<AnchorPane fx:id="mainPane" onMouseMoved="#onMouseMovedMainPane" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button fx:id="backButton" layoutX="269.0" layoutY="369.0" mnemonicParsing="false" onMouseClicked="#backButtonClicked" text="Back" />
-      <Label layoutX="56.0" layoutY="95.0" text="Liczba kolumn lub wirszy: " />
+      <Button fx:id="backButton" layoutX="271.0" layoutY="416.0" mnemonicParsing="false" onMouseClicked="#backButtonClicked" text="Back" />
+      <Label fx:id="numberColRowLabel" layoutX="56.0" layoutY="95.0" text="Liczba kolumn lub wierszy: " />
       <RadioButton fx:id="humanRadio" layoutX="264.0" layoutY="170.0" mnemonicParsing="false" onMouseClicked="#onClickedHumanRadio" text="Człowiek" />
-      <Label layoutX="195.0" layoutY="170.0" text="Tryb:" />
+      <Label fx:id="hCModeLabel" layoutX="195.0" layoutY="170.0" text="Tryb:" />
       <RadioButton fx:id="computerRadio" layoutX="380.0" layoutY="170.0" mnemonicParsing="false" onMouseClicked="#onClickedComputerRadio" text="Komputer" />
-      <Label layoutX="194.0" layoutY="239.0" text="Tryb:" />
+      <Label fx:id="CirCroModeLabel" layoutX="194.0" layoutY="239.0" text="Tryb:" />
       <RadioButton fx:id="circleRadioButton" layoutX="264.0" layoutY="239.0" mnemonicParsing="false" onMouseClicked="#onClickCircleRadio" text="Kółko" />
       <RadioButton fx:id="crossRadioButton" layoutX="380.0" layoutY="239.0" mnemonicParsing="false" onMouseClicked="#onClickCrossRadio" text="Krzyżyk" />
       <RadioButton fx:id="randomCrossCircleRadioButton" layoutX="508.0" layoutY="239.0" mnemonicParsing="false" onMouseClicked="#onClickCircleCrossRadio" text="Losuj" />
-      <Label layoutX="194.0" layoutY="306.0" text="Tryb:" />
+      <Label fx:id="FSModeLabel" layoutX="194.0" layoutY="306.0" text="Tryb:" />
       <RadioButton fx:id="firstRadioButton" layoutX="265.0" layoutY="306.0" mnemonicParsing="false" onMouseClicked="#onClickFirstRadio" text="Pierwszy" />
       <RadioButton fx:id="secondRadioButton" layoutX="380.0" layoutY="306.0" mnemonicParsing="false" onMouseClicked="#onClickSecondRadio" text="Drugi" />
       <RadioButton fx:id="randomFirstSecondRadioButton" layoutX="508.0" layoutY="306.0" mnemonicParsing="false" onMouseClicked="#onClickFirstSecondRadio" text="Losuj" />
       <ComboBox fx:id="rowOrColumnComboBox" layoutX="254.0" layoutY="90.0" prefWidth="150.0" />
+      <Label fx:id="letterSizeLabel" layoutX="53.0" layoutY="41.0" prefHeight="21.0" prefWidth="362.0" text="Ustaw rozmiar liter:" />
+      <Slider fx:id="sizeSlider" blockIncrement="1.0" layoutX="255.0" layoutY="44.0" majorTickUnit="0.5" max="2.5" min="1.0" minorTickCount="5" onMouseReleased="#sliderClicked" prefHeight="18.0" prefWidth="150.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
+      <TextField fx:id="firstPlayer" layoutX="384.0" layoutY="359.0" prefHeight="31.0" prefWidth="86.0" promptText="nick pierwszego gracza" />
+      <RadioButton fx:id="tournamentRadioButton" layoutX="268.0" layoutY="364.0" mnemonicParsing="false" onMouseClicked="#onClickTourmentRadio" text="Zawody" />
+      <TextField fx:id="secondPlayer" layoutX="508.0" layoutY="359.0" prefHeight="31.0" prefWidth="86.0" promptText="nick drugiego gracza" />
+      <Label fx:id="tournamentModeLabel" layoutX="194.0" layoutY="364.0" text="Tryb:" />
    </children>
 </AnchorPane>
